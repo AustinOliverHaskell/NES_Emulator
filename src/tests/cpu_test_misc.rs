@@ -11,13 +11,27 @@ fn and() {
 }
 
 #[test]
-fn asl() {
-    assert!(false);
+fn bit_zero_page() {
+    let program: Vec<u8> = vec![0x24, 0xFF];
+    let mut cpu = CPU::new(program);
+    cpu.registers.a = 0x00;
+    cpu.write(0x00FF, 0xFF);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, OVERFLOW | NEGATIVE | ZERO);
 }
 
 #[test]
-fn bit() {
-    assert!(false);
+fn bit_absolute() {
+    let program: Vec<u8> = vec![0x2C, 0xFF, 0x00];
+    let mut cpu = CPU::new(program);
+    cpu.registers.a = 0x00;
+    cpu.write(0x00FF, 0xFF);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, OVERFLOW | NEGATIVE | ZERO);
 }
 
 #[test]
@@ -67,22 +81,71 @@ fn eor() {
 
 #[test]
 fn inc_zero_page() {
-    assert!(false);
+    let program: Vec<u8> = vec![0xE6, 0xDD, 0xE6, 0xDD];
+    let mut cpu = CPU::new(program);
+
+    cpu.run_next_instruction();
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.memory[0xDD], 2);
+}
+
+
+#[test]
+fn inc_value_is_zero() {
+    let program: Vec<u8> = vec![0xE6, 0xDD];
+    let mut cpu = CPU::new(program);
+    cpu.write(0xDD, 0xFF);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO);
+}
+
+#[test]
+fn inc_negative_set() {
+    let program: Vec<u8> = vec![0xE6, 0xDD];
+    let mut cpu = CPU::new(program);
+    cpu.write(0xDD, 0xFE);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, NEGATIVE);
 }
 
 #[test]
 fn inc_zero_page_x() {
-    assert!(false);
+    let program: Vec<u8> = vec![0xF6, 0xDD, 0xF6, 0xDD];
+    let mut cpu = CPU::new(program);
+    cpu.registers.x = 0x11;
+
+    cpu.run_next_instruction();
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.memory[0xEE], 2);
 }
 
 #[test]
 fn inc_absolute() {
-    assert!(false);
+    let program: Vec<u8> = vec![0xEE, 0x00, 0xDD, 0xEE, 0x00, 0xDD];
+    let mut cpu = CPU::new(program);
+
+    cpu.run_next_instruction();
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.memory[0xDD00], 2);
 }
 
 #[test]
 fn inc_absolute_x() {
-    assert!(false);
+    let program: Vec<u8> = vec![0xFE, 0x00, 0xDD, 0xFE, 0x00, 0xDD];
+    let mut cpu = CPU::new(program);
+    cpu.registers.x = 0x11;
+
+    cpu.run_next_instruction();
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.memory[0xDD11], 2);
 }
 
 #[test]
@@ -139,16 +202,6 @@ fn nop() {
 
 #[test]
 fn ora() {
-    assert!(false);
-}
-
-#[test]
-fn rol() {
-    assert!(false);
-}
-
-#[test]
-fn ror() {
     assert!(false);
 }
 

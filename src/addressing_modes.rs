@@ -1,6 +1,6 @@
 use crate::cpu::CPU;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 #[allow(non_camel_case_types)]
 pub enum AddressingMode {
    Immediate,

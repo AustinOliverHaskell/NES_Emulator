@@ -124,11 +124,26 @@ impl CPU
             0x21 => println!("AND (Indirect X) is not implemented. "),
             0x31 => println!("AND (Indirect Y) is not implemented. "),
             /* ----- ASL ----- */
-            0x0A => println!("ASL (ImmediateMode) is not implemented. "),
-            0x06 => println!("ASL (ImmediateMode) is not implemented. "),
-            0x16 => println!("ASL (ImmediateMode) is not implemented. "),
-            0x0E => println!("ASL (ImmediateMode) is not implemented. "),
-            0x1E => println!("ASL (ImmediateMode) is not implemented. "),
+            0x0A => {
+                self.asl(AddressingMode::Accumulator);
+                self.program_counter += 1;
+            },
+            0x06 => {
+                self.asl(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0x16 => {
+                self.asl(AddressingMode::ZeroPage_X);
+                self.program_counter += 2;
+            },
+            0x0E => {
+                self.asl(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
+            0x1E => {
+                self.asl(AddressingMode::Absolute_X);
+                self.program_counter += 3;
+            },
             /* ----- BCC ----- */
             0x90 => self.branch(CARRY, false),
             /* ----- BCS ----- */
@@ -136,8 +151,14 @@ impl CPU
             /* ----- BEQ ----- */
             0xF0 => self.branch(ZERO, true),
             /* ----- BIT ----- */
-            0x24 => println!("BIT (Zero Page) is not implemented."),
-            0x2C => println!("BIT (Absolute) is not implemented."),
+            0x24 => {
+                self.bit(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0x2C => {
+                self.bit(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
             /* ----- BMI ----- */
             0x30 => self.branch(NEGATIVE, true),
             /* ----- BNE ----- */
@@ -212,10 +233,22 @@ impl CPU
             0x41 => println!("EOR (Indirext X) is not implemented."),
             0x51 => println!("EOR (Indirect Y) is not implemented."),
             /* ----- INC ----- */
-            0xE6 => println!("INC (Zero Page) is not implemented."),
-            0xF6 => println!("INC (Zero Page X) is not implemented."),
-            0xEE => println!("INC (Absolute) is not implemented."),
-            0xFE => println!("INC (Absolute X) is not implemented."),
+            0xE6 => {
+                self.inc(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0xF6 => {
+                self.inc(AddressingMode::ZeroPage_X);
+                self.program_counter += 2;
+            },
+            0xEE => {
+                self.inc(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
+            0xFE => {
+                self.inc(AddressingMode::Absolute_X);
+                self.program_counter += 3;
+            },
             /* ----- INX ----- */
             0xE8 => {
                 self.inx();
@@ -296,11 +329,26 @@ impl CPU
             /* ----- PLP ----- */
             0x28 => self.plp(),
             /* ----- ROL ----- */
-            0x2A => println!("ROL (Accumulator) is not implemented."),
-            0x26 => println!("ROL (Zero Page) is not implemented."),
-            0x36 => println!("ROL (Zero Page X) is not implemented."),
-            0x2E => println!("ROL (Absolute) is not implemented."),
-            0x3E => println!("ROL (Absolute X) is not implemented."),  
+            0x2A => {
+                self.rol(AddressingMode::Accumulator);
+                self.program_counter += 1;
+            },
+            0x26 => {
+                self.rol(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0x36 => {
+                self.rol(AddressingMode::ZeroPage_X);
+                self.program_counter += 2;
+            },
+            0x2E => {
+                self.rol(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
+            0x3E => {
+                self.rol(AddressingMode::Absolute_X);
+                self.program_counter += 3;
+            },  
             /* ----- ROR ----- */
             0x6A => println!("ROR (Accumulator) is not implemented."),
             0x66 => println!("ROR (Zero Page) is not implemented."),
@@ -430,6 +478,14 @@ impl CPU
         self.status = self.status & !OVERFLOW;
     }
 
+    fn set_status_bit_if_bit_set(&mut self, bit_to_check: u8, bit_to_set: u8, val: u8) {
+        if val & bit_to_check != 0 {
+            self.status = self.status | bit_to_set;
+        } else {
+            self.status = self.status & !bit_to_set;
+        }
+    }
+
     fn grab_next_byte_and_advance_counter(&mut self) -> u8 {
         let val = self.memory[self.program_counter as usize];
         self.program_counter += 1;
@@ -455,6 +511,7 @@ impl CPU
     }
 
     pub fn write(&mut self, addr: u16, data: u8) {
+        println!("Writing to address 0x{:04x}", addr);
         self.memory[addr as usize] = data;
     }
 
@@ -590,15 +647,15 @@ impl CPU
         }
     }
 
-    fn asl(&mut self) {
-        if self.registers.a & 0b1000_0000 != 0 {
-            self.set_carry_bit();
-        } else {
-            self.clear_carry_bit();
-        }
+    fn inc(&mut self, mode: AddressingMode) {
+        let addr = get_operator_from_addressing_mode(self, mode);
+        let mut val = self.load(addr);
 
-        self.registers.a = self.registers.a << 1;
-        self.update_negative_and_zero(self.registers.a);
+        val = val.wrapping_add(1);
+
+        self.update_negative_and_zero(val);
+
+        self.write(addr, val);
     }
 
     fn inx(&mut self) {
@@ -639,6 +696,86 @@ impl CPU
     fn tsx(&mut self) {
         self.registers.x = self.stack_pointer;
         self.update_negative_and_zero(self.registers.x);
+    }
+
+    fn bit(&mut self, mode: AddressingMode) {
+        let addr = get_operator_from_addressing_mode(self, mode);
+        let val = self.load(addr);
+
+        self.set_status_bit_if_bit_set(0b0100_0000, OVERFLOW, val);
+        self.set_status_bit_if_bit_set(0b1000_0000, NEGATIVE, val);
+        
+        if val & self.registers.a == 0 {
+            self.set_zero_bit();
+        } else {
+            self.clear_zero_bit();
+        }
+    }
+
+    fn asl(&mut self, mode: AddressingMode) {
+
+        let mut addr: u16 = 0;
+        let mut val: u8;
+
+        if mode == AddressingMode::Accumulator {
+            val = self.registers.a; 
+        } else {
+            addr = get_operator_from_addressing_mode(self, mode);
+            val = self.load(addr); 
+        }
+
+        self.set_status_bit_if_bit_set(0b1000_0000, CARRY, val);
+
+        if val == 0 {
+            self.set_zero_bit();
+        } else {
+            self.clear_zero_bit();
+        }
+
+        val = val << 1;
+
+        self.set_status_bit_if_bit_set(0b1000_0000, NEGATIVE, val);
+
+        if mode == AddressingMode::Accumulator {
+            self.registers.a = val;
+        } else {
+            self.write(addr, val);
+        }
+    }
+
+    fn rol(&mut self, mode: AddressingMode) {
+        let mut addr: u16 = 0;
+        let mut val: u8;
+
+        if mode == AddressingMode::Accumulator {
+            val = self.registers.a;
+
+            if val == 0 {
+                self.set_zero_bit();
+                return;
+            } else {
+                self.clear_zero_bit();
+            }
+        } else {
+            addr = get_operator_from_addressing_mode(self, mode);
+            val = self.load(addr);
+        }
+
+        let old_carry = self.status & CARRY;
+        self.set_status_bit_if_bit_set(0b1000_0000, CARRY, val);
+
+        val = val << 1;
+        if old_carry != 0 {
+            val = val | 0b0000_0001;
+        }
+
+        self.set_status_bit_if_bit_set(0b1000_0000, NEGATIVE, val);
+
+        if mode == AddressingMode::Accumulator {
+            self.registers.a = val;
+        } else {
+            self.write(addr, val);
+        }
     }
 }
 
