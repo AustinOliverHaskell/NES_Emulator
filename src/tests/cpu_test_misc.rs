@@ -40,12 +40,58 @@ fn cmp() {
 }
 
 #[test]
-fn cpx() {
+fn cpx_immediate_equal() {
+    let test_value = 0xFF;
+
+    let program: Vec<u8> = vec![0xE0, test_value];
+    let mut cpu = CPU::new(program);
+    cpu.registers.x = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO | NEGATIVE);
+}
+
+#[test]
+fn cpx_immediate_x_greater() {
+    let test_value = 0xFF;
+
+    let program: Vec<u8> = vec![0xE0, test_value - 1];
+    let mut cpu = CPU::new(program);
+    cpu.registers.x = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, CARRY | NEGATIVE);
+}
+
+#[test]
+fn cpx_zero_page() {
     assert!(false);
 }
 
 #[test]
-fn cpy() {
+fn cpx_absolute() {
+    assert!(false);
+}
+
+#[test]
+fn cpy_immediate_equal() {
+    assert!(false);
+}
+
+#[test]
+fn cpy_immediate_y_greater() {
+    assert!(false);
+}
+
+#[test]
+fn cpy_zero_page() {
+    assert!(false);
+}
+
+#[test]
+fn cpy_absolute() {
     assert!(false);
 }
 

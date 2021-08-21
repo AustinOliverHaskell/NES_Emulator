@@ -201,9 +201,18 @@ impl CPU
             0xC1 => println!("CMP (Indirext X) is not implemented."),
             0xD1 => println!("CMP (Indirect Y) is not implemented."),
             /* ----- CPX ----- */
-            0xE0 => println!("CPX (Immediate) is not implemented."),
-            0xE4 => println!("CPX (Zero Page) is not implemented."),
-            0xEC => println!("CPX (Absolute) is not implemented."),
+            0xE0 => {
+                self.cpx(AddressingMode::Immediate);
+                self.program_counter += 2;
+            },
+            0xE4 => {
+                self.cpx(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0xEC => {
+                self.cpx(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
             /* ----- CPY ----- */
             0xC0 => println!("CPY (Immediate) is not implemented."),
             0xC4 => println!("CPY (Zero Page) is not implemented."),
@@ -350,11 +359,26 @@ impl CPU
                 self.program_counter += 3;
             },  
             /* ----- ROR ----- */
-            0x6A => println!("ROR (Accumulator) is not implemented."),
-            0x66 => println!("ROR (Zero Page) is not implemented."),
-            0x76 => println!("ROR (Zero Page X) is not implemented."),
-            0x6E => println!("ROR (Absolute) is not implemented."),
-            0x7E => println!("ROR (Absolute X) is not implemented."),
+            0x6A => {
+                self.ror(AddressingMode::Accumulator);
+                self.program_counter += 1;
+            },
+            0x66 => {
+                self.ror(AddressingMode::ZeroPage);
+                self.program_counter += 2;
+            },
+            0x76 => {
+                self.ror(AddressingMode::ZeroPage_X);
+                self.program_counter += 2;
+            },
+            0x6E => {
+                self.ror(AddressingMode::Absolute);
+                self.program_counter += 3;
+            },
+            0x7E => {
+                self.ror(AddressingMode::Absolute_X);
+                self.program_counter += 3;
+            },
             /* ----- RTI ----- */
             0x40 => println!("RTI is not implemented."),
             /* ----- RTS ----- */
@@ -756,8 +780,10 @@ impl CPU
             } else {
                 self.clear_zero_bit();
             }
+
         } else {
             addr = get_operator_from_addressing_mode(self, mode);
+            println!("Addr from get_operator 0x{:04x}", addr);
             val = self.load(addr);
         }
 
@@ -776,6 +802,62 @@ impl CPU
         } else {
             self.write(addr, val);
         }
+    }
+
+    fn ror(&mut self, mode: AddressingMode) {
+        let mut addr: u16 = 0;
+        let mut val: u8;
+
+        if mode == AddressingMode::Accumulator {
+            val = self.registers.a;
+
+            if val == 0 {
+                self.set_zero_bit();
+                return;
+            } else {
+                self.clear_zero_bit();
+            }
+
+        } else {
+            addr = get_operator_from_addressing_mode(self, mode);
+            println!("Addr from get_operator 0x{:04x}", addr);
+            val = self.load(addr);
+        }
+
+        let old_carry = self.status & CARRY;
+        self.set_status_bit_if_bit_set(0b0000_0001, CARRY, val);
+
+        val = val >> 1;
+        if old_carry != 0 {
+            val = val | 0b1000_0000;
+        }
+
+        self.set_status_bit_if_bit_set(0b1000_0000, NEGATIVE, val);
+
+        if mode == AddressingMode::Accumulator {
+            self.registers.a = val;
+        } else {
+            self.write(addr, val);
+        }
+    }
+
+    fn cpx(&mut self, mode: AddressingMode) {
+        let addr = get_operator_from_addressing_mode(self, mode);
+        let val = self.load(addr);
+
+        if self.registers.x > val {
+            self.set_carry_bit();
+        } else {
+            self.clear_carry_bit();
+        }
+
+        if self.registers.x == val {
+            self.set_zero_bit();
+        } else {
+            self.clear_zero_bit();
+        }
+
+        self.set_status_bit_if_bit_set(0b1000_0000, NEGATIVE, val);
     }
 }
 
