@@ -1,0 +1,12 @@
+LDY #$01 ; Clear all the registers
+LDA #$00
+loop:
+  INY
+  INC $00
+  TYA ; Move y into a
+  TAX ; Move a into x
+  STY $00,X ; Use X register as a memory address to store y
+  CPY #$FF
+  BNE loop
+
+

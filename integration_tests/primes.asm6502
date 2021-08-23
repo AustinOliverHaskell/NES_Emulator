@@ -1,0 +1,47 @@
+; define addr_for_next_prime $DD
+; define compare_space $00
+
+LDX #$00 ; Clear Registers
+LDY #$00
+LDA #$00
+; Because the assembler with this cant handle comments in loops...
+; line 14: clear loop counter
+; line 15: push loop counter to stack
+; line 17: Put the iteration number in the x register
+; line 18: Call is_prime subroutine
+; line 20: Pop stack into a
+loop: 
+    TYA
+    PHA
+
+    TXA
+    JSR check_if_prime
+
+    PLA
+    TAY
+
+    INY
+    CPY #$DD
+    BNE loop 
+
+; X -> Number to check if prime
+; Returns
+;    A -> 0 if not prime
+;         1 if prime
+check_if_prime: 
+    LDY #$00
+    LDA #$00
+    STX $00
+
+    prime_loop:
+        INY
+        CPY $00
+        BNE prime_loop
+    RTS
+
+    is_prime:
+        LDA #$01
+        JMP end
+    is_not_prime:
+        LDA #$00
+    end:

@@ -211,3 +211,13 @@ fn jmp_absolute() {
 fn jmp_indirect() {
     assert!(false);
 }
+
+#[test]
+fn jsr() {
+    assert!(false);
+}
+
+#[test]
+fn rts() {
+    assert!(false);
+}

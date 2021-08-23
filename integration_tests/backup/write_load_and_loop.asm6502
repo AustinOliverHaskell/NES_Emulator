@@ -1,0 +1,8 @@
+LDX $40
+LDA $40
+ADC #$10
+STA $41
+loop: 
+  INX
+  CPX $41
+  BNE loop

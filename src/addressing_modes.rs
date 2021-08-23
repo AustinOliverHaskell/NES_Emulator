@@ -14,7 +14,8 @@ pub enum AddressingMode {
    Indirect_Y,
    Accumulator,
    Relative,
-   Indirect
+   Indirect,
+   Implied
 }
 
 pub fn get_operator_from_addressing_mode(cpu: &mut CPU, addressing_mode: AddressingMode) -> u16 {

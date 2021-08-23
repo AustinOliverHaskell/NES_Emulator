@@ -1,0 +1,10 @@
+LDY #$01 ; Clear all the registers
+LDA #$00
+loop:
+  INY
+  INC $00
+  TYA
+  TAX
+  STY $00,X
+  CPY #$FF
+  BNE loop

@@ -1,0 +1,2 @@
+The assembler from the wayback machine (https://web.archive.org/web/20180407023609/http://www.lassie.demon.co.uk/microlab/assembler.html)
+wont add the last line of the source file to the output so you need to put an extra line at the end.  

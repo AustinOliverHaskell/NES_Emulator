@@ -1,2 +1,4 @@
 /target
+/integration_tests_results
 /roms
+*.bak

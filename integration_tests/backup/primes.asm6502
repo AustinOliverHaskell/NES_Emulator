@@ -1,0 +1,38 @@
+define addr_for_next_prime $DD
+define compare_space $00
+define stop_number $DD
+
+LDX #$00 ; Clear Registers
+LDY #$00
+LDA #$00
+loop: 
+    TYA
+    PHA ; Push whatever loop # where on onto the stack
+
+    TXA ; Put the loop var into x in prep for is_prime
+    JSR is_prime ; Calc if x is prime
+
+    PLA ; Pull value back into A
+    TAY ; Put a into y
+
+    INY
+    CPY #stop_number ; Check if we're at the limit
+    BNE loop 
+
+; X -> Number to check if prime
+; Returns
+;    A -> 0 if not prime
+;         1 if prime
+is_prime: 
+    LDY #$00 ; Clear y
+    STX compare_space ; Store X so we can compare it to the loop counter
+
+    LDA #$00 ; Clear out the addr where the result is stored
+    
+    prime_loop:
+        
+
+        INY
+        CPY compare_space
+        BNE prime_loop
+    RTS

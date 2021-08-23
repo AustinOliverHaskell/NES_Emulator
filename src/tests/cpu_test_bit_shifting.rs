@@ -289,3 +289,43 @@ fn ror_absolute_x() {
 
     assert_eq!(cpu.load(test_addr), test_value >> 1);
 }
+
+#[test]
+fn lsr_accumulator() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn lsr_zero_page() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn lsr_zero_page_x() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn lsr_absolute() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn lsr_absolute_x() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}

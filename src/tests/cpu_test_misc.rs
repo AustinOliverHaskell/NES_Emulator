@@ -1,7 +1,72 @@
 use crate::cpu::*;
 
 #[test]
-fn adc() {
+fn adc_immediate() {
+    let test_val_a = 0x80;
+    let test_val_b = 0x30;
+
+    let program: Vec<u8> = vec![0x69, test_val_a];
+
+    let mut cpu = CPU::new(program);
+    cpu.registers.a = test_val_b;
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.registers.a, test_val_a.wrapping_add(test_val_b));
+}
+
+#[test]
+fn adc_zero_page() {
+    let program: Vec<u8> = vec![0x65, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_zero_page_x() {
+    let program: Vec<u8> = vec![0x75, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_absolute() {
+    let program: Vec<u8> = vec![0x6D, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_absolute_x() {
+    let program: Vec<u8> = vec![0x7D, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_absolute_y() {
+    let program: Vec<u8> = vec![0x79, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_indirect_x() {
+    let program: Vec<u8> = vec![0x61, 0xFF];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn adc_indirect_y() {
+    let program: Vec<u8> = vec![0x71, 0xFF];
+    let mut cpu = CPU::new(program);
+
     assert!(false);
 }
 
@@ -96,8 +161,63 @@ fn cpy_absolute() {
 }
 
 #[test]
-fn dec() {
-    assert!(false);
+fn dec_zero_page() {
+    let test_addr: u16 = 0x30;
+    let test_value = 0xFF;
+    let program: Vec<u8> = vec![0xC6, test_addr as u8];
+    let mut cpu = CPU::new(program);
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value - 1);
+}
+
+#[test]
+fn dec_zero_page_x() {
+    let mut test_addr: u16 = 0x30;
+    let test_value = 0xFF;
+
+    let program: Vec<u8> = vec![0xD6, test_addr as u8];
+
+    let mut cpu = CPU::new(program);
+    cpu.registers.x = 0x11;
+    test_addr += 0x11;
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value - 1);
+}
+
+#[test]
+fn dec_absolute() {
+    let test_addr: u16 = 0x3030;
+    let test_value = 0xFF;
+    let program: Vec<u8> = vec![0xCE, (test_addr & 0xFF) as u8, ((test_addr >> 8) & 0xFF) as u8];
+    let mut cpu = CPU::new(program);
+    
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value - 1);
+}
+
+#[test]
+fn dec_absolute_x() {
+    let mut test_addr: u16 = 0x3030;
+    let test_value = 0xFF;
+    let program: Vec<u8> = vec![0xDE, (test_addr & 0xFF) as u8, ((test_addr >> 8) & 0xFF) as u8];
+
+    let mut cpu = CPU::new(program);
+    cpu.registers.x += 0x11;
+    test_addr += 0x11;
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value - 1);
 }
 
 #[test]
@@ -213,27 +333,127 @@ fn iny() {
 }
 
 #[test]
-fn jsr() {
+fn lda_immediate() {
     assert!(false);
 }
 
 #[test]
-fn lda() {
+fn lda_zero_page() {
     assert!(false);
 }
 
 #[test]
-fn ldx() {
+fn lda_zero_page_x() {
     assert!(false);
 }
 
 #[test]
-fn ldy() {
+fn lda_absolute() {
     assert!(false);
 }
 
 #[test]
-fn lsr() {
+fn lda_absolute_x() {
+    assert!(false);
+}
+
+#[test]
+fn lda_absolute_y() {
+    assert!(false);
+}
+
+#[test]
+fn lda_indirect_x() {
+    assert!(false);
+}
+
+#[test]
+fn lda_indirect_y() {
+    assert!(false);
+}
+
+#[test]
+fn ldx_immediate() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+
+    assert!(false);
+}
+
+#[test]
+fn ldx_zero_page() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+
+    assert!(false);
+}
+
+#[test]
+fn ldx_zero_page_y() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+
+    assert!(false);
+}
+
+#[test]
+fn ldx_absolute() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+
+    assert!(false);
+}
+
+#[test]
+fn ldx_absolute_y() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+
+    assert!(false);
+}
+
+#[test]
+fn ldy_immediate() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn ldy_zero_page() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn ldy_zero_page_x() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn ldy_absolute() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
+    assert!(false);
+}
+
+#[test]
+fn ldy_absolute_x() {
+    let program: Vec<u8> = vec![0xA2];
+    let mut cpu = CPU::new(program);
+
     assert!(false);
 }
 
@@ -257,28 +477,72 @@ fn rti() {
 }
 
 #[test]
-fn rts() {
-    assert!(false);
-}
-
-#[test]
 fn sbc() {
     assert!(false);
 }
 
-
 #[test]
-fn sta() {
+fn sta_zero_page() {
     assert!(false);
 }
 
 #[test]
-fn stx() {
+fn sta_zero_page_x() {
     assert!(false);
 }
 
 #[test]
-fn sty() {
+fn sta_absolute() {
+    assert!(false);
+}
+
+#[test]
+fn sta_absolute_x() {
+    assert!(false);
+}
+
+#[test]
+fn sta_absolute_y() {
+    assert!(false);
+}
+
+#[test]
+fn sta_indirect_x() {
+    assert!(false);
+}
+
+#[test]
+fn sta_indirect_y() {
+    assert!(false);
+}
+
+#[test]
+fn stx_zero_page() {
+    assert!(false);
+}
+
+#[test]
+fn stx_zero_page_y() {
+    assert!(false);
+}
+
+#[test]
+fn stx_absolute() {
+    assert!(false);
+}
+
+#[test]
+fn sty_zero_page() {
+    assert!(false);
+}
+
+#[test]
+fn sty_zero_page_x() {
+    assert!(false);
+}
+
+#[test]
+fn sty_absolute() {
     assert!(false);
 }
 
