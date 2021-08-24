@@ -10,7 +10,7 @@ pub mod tests {
     pub mod cpu_test_branching;
     pub mod cpu_test_status_flags;
     pub mod cpu_test_stack;
-    pub mod cpu_test_bit_shifting;
+    pub mod cpu_test_bit_bashing;
     pub mod cpu_test_misc;
 }
 
