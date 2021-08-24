@@ -71,7 +71,47 @@ fn adc_indirect_y() {
 }
 
 #[test]
-fn and() {
+fn and_flag() {
+    assert!(false);
+}
+
+#[test]
+fn and_immediate() {
+    assert!(false);
+}
+
+#[test]
+fn and_zero_page() {
+    assert!(false);
+}
+
+#[test]
+fn and_zero_page_x() {
+    assert!(false);
+}
+
+#[test]
+fn and_absolute() {
+    assert!(false);
+}
+
+#[test]
+fn and_absolute_x() {
+    assert!(false);
+}
+
+#[test]
+fn and_absolute_y() {
+    assert!(false);
+}
+
+#[test]
+fn and_indirect_x() {
+    assert!(false);
+}
+
+#[test]
+fn and_indirect_y() {
     assert!(false);
 }
 
@@ -100,7 +140,47 @@ fn bit_absolute() {
 }
 
 #[test]
-fn cmp() {
+fn cmp_flags() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_immediate() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_zero_page() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_zero_page_x() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_absolute() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_absolute_x() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_absolute_y() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_indirect_x() {
+    assert!(false);
+}
+
+#[test]
+fn cmp_indirect_y() {
     assert!(false);
 }
 
