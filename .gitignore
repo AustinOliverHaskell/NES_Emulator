@@ -1,4 +1,7 @@
 /target
 /integration_tests_results
+/integration_tests/*.bin
+/integration_tests/nul
+/integration_tests/backup/
 /roms
 *.bak
