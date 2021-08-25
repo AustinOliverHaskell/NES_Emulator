@@ -212,12 +212,32 @@ fn cpx_immediate_x_greater() {
 
 #[test]
 fn cpx_zero_page() {
-    assert!(false);
+    let test_value = 0x7F;
+    let test_addr: u8 = 0xDD;
+    let program: Vec<u8> = vec![0xE4, test_addr];
+    let mut cpu = CPU::new(program);
+
+    cpu.write(test_addr as u16, test_value);
+    cpu.registers.x = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO);
 }
 
 #[test]
 fn cpx_absolute() {
-    assert!(false);
+    let test_value = 0x7F;
+    let test_addr: u16 = 0x55DD;
+    let program: Vec<u8> = vec![0xEC, test_addr as u8, (test_addr >> 8) as u8];
+    let mut cpu = CPU::new(program);
+
+    cpu.write(test_addr, test_value);
+    cpu.registers.x = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO);
 }
 
 #[test]

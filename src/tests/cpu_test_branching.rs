@@ -214,6 +214,9 @@ fn jmp_indirect() {
 
 #[test]
 fn jsr() {
+    let program: Vec<u8> = vec![];
+
+
     assert!(false);
 }
 

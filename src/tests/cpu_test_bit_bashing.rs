@@ -291,41 +291,90 @@ fn ror_absolute_x() {
 }
 
 #[test]
-fn lsr_accumulator() {
-    let program: Vec<u8> = vec![0xA2];
+fn lsr_flags() {
+    let test_value = 0xDD;
+    let program: Vec<u8> = vec![0x4A, 0x4A];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.registers.a = test_value;
+    cpu.run_next_instruction();
+    assert_eq!(cpu.status, CARRY);
+
+    cpu.registers.a = 0;
+    cpu.run_next_instruction();
+    assert_eq!(cpu.status, ZERO);
+}
+
+#[test]
+fn lsr_accumulator() {
+    let test_value = 0xDD;
+    let program: Vec<u8> = vec![0x4A];
+    let mut cpu = CPU::new(program);
+
+    cpu.registers.a = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.registers.a, test_value >> 1);
 }
 
 #[test]
 fn lsr_zero_page() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value = 0xDD;
+    let test_addr = 0xFF;
+    let program: Vec<u8> = vec![0x46, test_addr];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.write(test_addr as u16, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr as u16), test_value >> 1);
 }
 
 #[test]
 fn lsr_zero_page_x() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value = 0xDD;
+    let mut test_addr = 0xFF;
+    let program: Vec<u8> = vec![0x56, test_addr];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.registers.x = test_value;
+    test_addr = test_addr.wrapping_add(test_value);
+    cpu.write(test_addr as u16, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr as u16), test_value >> 1);
 }
 
 #[test]
 fn lsr_absolute() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value = 0xDD;
+    let test_addr = 0x3030;
+
+    let program: Vec<u8> = vec![0x4E, test_addr as u8, (test_addr >> 8) as u8];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value >> 1);
 }
 
 #[test]
 fn lsr_absolute_x() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value = 0xDD;
+    let test_addr = 0x3030;
+
+    let program: Vec<u8> = vec![0x5E, 0x00, (test_addr >> 8) as u8];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.registers.x = test_addr as u8;
+    cpu.write(test_addr, test_value);
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.load(test_addr), test_value >> 1);
 }

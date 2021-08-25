@@ -468,47 +468,45 @@ impl CPU
 
     fn lda(&mut self, mode: AddressingMode) {
         let addr = get_operator_from_addressing_mode(self, mode);
-        let value = self.load(addr);
+        let val = self.load(addr);
 
-        self.update_negative_and_zero(value);
-        self.registers.a = value;
+        self.update_negative_and_zero(val);
+        self.registers.a = val;
     }
 
     fn ldx(&mut self, mode: AddressingMode) {
         let addr = get_operator_from_addressing_mode(self, mode);
-        let value = self.load(addr);
+        let val = self.load(addr);
 
-        self.update_negative_and_zero(value);
-        self.registers.x = value;
+        self.update_negative_and_zero(val);
+        self.registers.x = val;
     }
 
     fn ldy(&mut self, mode: AddressingMode) {
         let addr = get_operator_from_addressing_mode(self, mode);
-        let value = self.load(addr);
+        let val = self.load(addr);
 
-        self.update_negative_and_zero(value);
-        self.registers.y = value;
+        self.update_negative_and_zero(val);
+        self.registers.y = val;
     }
 
     fn lsr(&mut self, mode: AddressingMode) {
         if mode != AddressingMode::Accumulator {
             let addr = get_operator_from_addressing_mode(self, mode);
-            let mut value = self.load(addr);
-            if value & 0b0000_0001 != 0 {
-                self.set_carry_bit();
-            } else {
-                self.clear_carry_bit();
-            }
-            value = value >> 1;
-            self.write(addr, value);
+            let mut val = self.load(addr);
+
+            self.set_status_bit_if_bit_set(0b0000_0001, CARRY, val);
+
+            val = val >> 1;
+            self.write(addr, val);
+            self.update_negative_and_zero(val);
         } else {
-            if self.registers.a & 0b0000_0001 != 0 {
-                self.set_carry_bit();
-            } else {
-                self.clear_carry_bit();
-            }
+            self.set_status_bit_if_bit_set(0b0000_0001, CARRY, self.registers.a);
+
             self.registers.a = self.registers.a >> 1;
+            self.update_negative_and_zero(self.registers.a);
         }
+
     }
 
     fn inc(&mut self, mode: AddressingMode) {

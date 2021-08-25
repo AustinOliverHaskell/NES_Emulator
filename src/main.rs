@@ -1,5 +1,4 @@
 mod file_format;
-mod instructions;
 mod cpu;
 mod addressing_modes;
 mod util;
@@ -7,6 +6,7 @@ mod integration_tests;
 
 #[cfg(test)]
 pub mod tests {
+    pub mod test_util;
     pub mod cpu_test_branching;
     pub mod cpu_test_status_flags;
     pub mod cpu_test_stack;
