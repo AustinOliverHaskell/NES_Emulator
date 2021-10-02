@@ -3,6 +3,9 @@ mod cpu;
 mod addressing_modes;
 mod util;
 mod integration_tests;
+mod graphics {
+    mod windows_display;
+}
 
 #[cfg(test)]
 pub mod tests {

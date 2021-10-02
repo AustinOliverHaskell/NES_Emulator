@@ -213,7 +213,9 @@ pub fn map_instruction_to_addressing_mode(instruction: u8) -> AddressingMode {
     }
 }
 
-pub fn map_instruction_to_name(instruction: u8) -> &str {
+// Used for debugging - Austin Haskell 
+#[allow(dead_code)]
+pub fn map_instruction_to_name(instruction: u8) -> &'static str {
     match instruction {
         // ADC
         0x69 | 0x65 | 0x75 | 0x6D | 0x7D | 0x79 | 0x61 | 0x71 => "ADC",

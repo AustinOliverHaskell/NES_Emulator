@@ -53,9 +53,11 @@ pub fn create_test_cpu_from_addr_and_instruction(instruction: u8, addr: u16) -> 
     cpu
 }
 
-pub fn setup_cpu_for_addressing_mode(cpu: &mut CPU, test_addr: u16, mode: AddressingMode) {
-    let high: u8 = (test_addr >> 8) as u8;
-    let low : u8 = test_addr as u8;
-
-
+// Used for testing the addressing modes where you add the register
+//  value to the memory address. 
+pub fn split_address_in_two(val: u16) -> (u16, u16) {
+    let a = val / 2;
+    let b = val - a;
+    
+    (a, b)
 }

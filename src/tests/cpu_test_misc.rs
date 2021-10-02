@@ -1,4 +1,9 @@
 use crate::cpu::*;
+use crate::tests::test_util::*;
+
+// Note: At this point the memory addressing is pretty well tested, the reason for still
+//  testing the different addressing modes is just to double check that a typo or corner
+//  case is working properly. I still think I went a little overkill here - Austin Haskell 9/3/2021
 
 #[test]
 fn adc_immediate() {
@@ -141,22 +146,71 @@ fn bit_absolute() {
 
 #[test]
 fn cmp_flags() {
-    assert!(false);
+    let test_value_to_trigger_carry_flag: u8 = 0x0F;
+    let test_value_to_trigger_negative_flag: u8 = 0xFF;
+    let test_value_to_trigger_zero_flag: u8 = 0xFF;
+
+    let program: Vec<u8> = vec![0xC9, test_value_to_trigger_zero_flag, 0xC9, test_value_to_trigger_carry_flag, 0xC9, test_value_to_trigger_negative_flag];
+    let mut cpu = CPU::new(program);
+
+    // A == M
+    cpu.registers.a = test_value_to_trigger_zero_flag;
+    cpu.run_next_instruction();
+    assert_eq!(cpu.status, CARRY | ZERO);
+
+    // A >= M
+    cpu.registers.a = test_value_to_trigger_carry_flag.wrapping_add(1);
+    cpu.run_next_instruction();
+    assert_eq!(cpu.status, CARRY);
+
+    // M > A
+    cpu.registers.a = test_value_to_trigger_negative_flag.wrapping_sub(1);
+    cpu.run_next_instruction();
+    assert_eq!(cpu.status, NEGATIVE)
 }
 
 #[test]
 fn cmp_immediate() {
-    assert!(false);
+    let test_value: u8 = 0x0F;
+
+    let program: Vec<u8> = vec![0xC9, test_value];
+    let mut cpu = CPU::new(program);
+    cpu.registers.a = test_value;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO | CARRY);
 }
 
 #[test]
 fn cmp_zero_page() {
-    assert!(false);
+    let test_value: u8 = 0x0F;
+    let test_addr: u8 = 0xFF;
+
+    let program: Vec<u8> = vec![0xC5, test_addr];
+    let mut cpu = CPU::new(program);
+    cpu.write(test_addr as u16, test_value);
+
+    cpu.registers.a = test_value;
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO | CARRY);
 }
 
 #[test]
 fn cmp_zero_page_x() {
-    assert!(false);
+    let test_value: u8 = 0x0F;
+    let test_addr: u16 = 0x00FF;
+    let (program_test_addr, register_test_addr) = split_address_in_two(test_addr);
+
+    let program: Vec<u8> = vec![0xC5, program_test_addr as u8];
+    let mut cpu = CPU::new(program);
+    cpu.write(test_addr as u16, test_value);
+    
+    cpu.registers.a = register_test_addr as u8;
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.status, ZERO | CARRY);
 }
 
 #[test]

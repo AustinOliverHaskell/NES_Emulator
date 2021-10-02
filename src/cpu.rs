@@ -25,6 +25,12 @@ pub struct CPU {
     pub memory: [u8; 0xFFFF]
 }
 
+pub struct Registers {
+    pub a: u8,
+    pub x: u8,
+    pub y: u8,
+}
+
 impl CPU 
 {
     pub fn new(program: Vec<u8>) -> Self {
@@ -98,41 +104,41 @@ impl CPU
         println!();
     }
 
-        // Used for debugging - Austin Haskell 8/17/2021
-        #[allow(dead_code)]
-        pub fn dump_memory_to_human_readable_file(&mut self, start: u16, end: u16, filepath: String) {
-            let display_width: u32 = 16;
-            let mut line = start as u32;
+    // Used for debugging - Austin Haskell 8/17/2021
+    #[allow(dead_code)]
+    pub fn dump_memory_to_human_readable_file(&mut self, start: u16, end: u16, filepath: String) {
+        let display_width: u32 = 16;
+        let mut line = start as u32;
 
-            use std::fs::File;
-            use std::io::Write;
-            use std::io::BufWriter;
+        use std::fs::File;
+        use std::io::Write;
+        use std::io::BufWriter;
 
-            let file = File::create(filepath.clone());
-            if file.is_err() {
-                println!("Could not create log for [{:?}]", filepath);
-            }
-            let mut file_out = BufWriter::new(file.unwrap());   
-
-            for byte in self.memory[start as usize..end as usize].iter() {
-                if line % display_width == 0  || line == 0 {
-                    file_out.write(format!("0x{:04x} ", line).as_bytes()).expect("Failed to format memdump line number");
-                }
-    
-                if *byte == 0 {
-                    file_out.write(format!(" .. ").as_bytes()).expect("Failed to format memdump '..'");
-                }
-                else {
-                    file_out.write(format!(" {:02x} ", byte).as_bytes()).expect("Failed to write byte value for memdump");
-                }
-    
-                line += 1;
-                if line % display_width == 0 {
-                    file_out.write(format!("\n").as_bytes()).expect("Failed to write newline to memdump");
-                }
-            }
-            file_out.flush().expect("Failed to flush memdump");
+        let file = File::create(filepath.clone());
+        if file.is_err() {
+            println!("Could not create log for [{:?}]", filepath);
         }
+        let mut file_out = BufWriter::new(file.unwrap());   
+
+        for byte in self.memory[start as usize..end as usize].iter() {
+            if line % display_width == 0  || line == 0 {
+                file_out.write(format!("0x{:04x} ", line).as_bytes()).expect("Failed to format memdump line number");
+            }
+
+            if *byte == 0 {
+                file_out.write(format!(" .. ").as_bytes()).expect("Failed to format memdump '..'");
+            }
+            else {
+                file_out.write(format!(" {:02x} ", byte).as_bytes()).expect("Failed to write byte value for memdump");
+            }
+
+            line += 1;
+            if line % display_width == 0 {
+                file_out.write(format!("\n").as_bytes()).expect("Failed to write newline to memdump");
+            }
+        }
+        file_out.flush().expect("Failed to flush memdump");
+    }
 
     pub fn reset(&mut self) {
         self.registers.a = 0;
@@ -196,7 +202,7 @@ impl CPU
             /* ----- CLV ----- */
             0xB8 => self.clear_overflow_bit(),
             /* ----- CMP ----- */
-            0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => println!("CMP is not implemented."),
+            0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => self.cmp(mode),
             /* ----- CPX ----- */
             0xE0 | 0xE4 | 0xEC => self.cpx(mode),
             /* ----- CPY ----- */
@@ -278,7 +284,7 @@ impl CPU
         }
         
         // Dont advance the program counter if it was a jmp instruction - Austin Haskell 8/21/2021
-        if instruction != 0x4C && instruction != 0x6C {
+        if instruction != 0x4C && instruction != 0x6C && instruction != 0x20 {
             self.program_counter += addressing_mode_to_program_counter_advancement_amount(mode);
         }
     }
@@ -788,10 +794,19 @@ impl CPU
     fn rts(&mut self) {
         self.program_counter = self.pop_from_stack_16();
     } 
-}
 
-pub struct Registers {
-    pub a: u8,
-    pub x: u8,
-    pub y: u8,
+    fn cmp(&mut self, mode: AddressingMode) {
+        let addr = get_operator_from_addressing_mode(self, mode);
+        let val = self.load(addr);
+
+        let answer: i8 = (self.registers.a as i8).wrapping_sub(val as i8);
+
+        self.update_negative_and_zero(answer as u8);
+
+        if self.registers.a >= val {
+            self.set_carry_bit();
+        } else {
+            self.clear_carry_bit();
+        }
+    }
 }
