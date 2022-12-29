@@ -21,10 +21,18 @@ fn adc_immediate() {
 
 #[test]
 fn adc_zero_page() {
+    let test_val_a = 0x10;
+    let test_val_b = 0x11;
+
     let program: Vec<u8> = vec![0x65, 0xFF];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.write(0x00FF, test_val_a);
+    cpu.registers.a = test_val_b;
+
+    cpu.run_next_instruction();
+
+    assert_eq!(cpu.registers.a, test_val_a.wrapping_add(test_val_b));
 }
 
 #[test]
@@ -528,87 +536,140 @@ fn lda_indirect_y() {
 
 #[test]
 fn ldx_immediate() {
-    let program: Vec<u8> = vec![0xA2];
+    let program: Vec<u8> = vec![0xA2, 0x44];
     let mut cpu = CPU::new(program);
 
+    cpu.run_program();
 
-    assert!(false);
+    assert_eq!(cpu.registers.x, 0x44);
 }
 
 #[test]
 fn ldx_zero_page() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xA6, 0x44];
     let mut cpu = CPU::new(program);
+    cpu.write(0x44, test_value);
 
+    cpu.run_program();
 
-    assert!(false);
+    assert_eq!(cpu.registers.x, test_value);
 }
 
 #[test]
 fn ldx_zero_page_y() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value: u8 = 0x12; 
+    let memory_address: (u8, u8) = (0x44, 0x40);
+    let program: Vec<u8> = vec![0xB6, memory_address.0];
     let mut cpu = CPU::new(program);
+    cpu.registers.y = memory_address.1;
 
+    cpu.write((memory_address.0 + memory_address.1) as u16, test_value);
 
-    assert!(false);
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.x, test_value);
 }
 
 #[test]
 fn ldx_absolute() {
-    let program: Vec<u8> = vec![0xA2];
+    let memory_address: u16 = 0x2020;
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xAE, 0x20, 0x20];
     let mut cpu = CPU::new(program);
 
+    cpu.write(memory_address, test_value);
 
-    assert!(false);
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.x, test_value);
 }
 
 #[test]
 fn ldx_absolute_y() {
-    let program: Vec<u8> = vec![0xA2];
+    let memory_address: u16 = 0x2020;
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xBE, 0x00, 0x20];
     let mut cpu = CPU::new(program);
 
+    cpu.write(memory_address, test_value);
 
-    assert!(false);
+    cpu.registers.y = 0x20;
+
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.x, test_value);
 }
 
 #[test]
 fn ldy_immediate() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xA0, test_value];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.y, test_value);
 }
 
 #[test]
 fn ldy_zero_page() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xA4, 0x20];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.write(0x20, test_value);
+
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.y, test_value);
 }
 
 #[test]
 fn ldy_zero_page_x() {
-    let program: Vec<u8> = vec![0xA2];
+    let test_value: u8 = 0x12;
+    let test_addr: u8 = 0x20;
+    let test_offset: u8 = 0x30;
+
+    let program: Vec<u8> = vec![0xB4, test_addr];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.registers.x = test_offset;
+    cpu.write(test_addr.wrapping_add(test_offset) as u16, test_value);
+
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.y, test_value);
 }
 
 #[test]
 fn ldy_absolute() {
-    let program: Vec<u8> = vec![0xA2];
+    let memory_address: u16 = 0x2020;
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xA2, (memory_address >> 8) as u8, memory_address as u8];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.write(memory_address, test_value);
+
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.y, test_value);
 }
 
 #[test]
 fn ldy_absolute_x() {
-    let program: Vec<u8> = vec![0xA2];
+    let memory_address: u16 = 0x2030;
+    let test_value: u8 = 0x12;
+    let program: Vec<u8> = vec![0xA2, (memory_address >> 8) as u8, 0x00];
     let mut cpu = CPU::new(program);
 
-    assert!(false);
+    cpu.registers.x = memory_address as u8;
+
+    cpu.write(memory_address, test_value);
+
+    cpu.run_program();
+
+    assert_eq!(cpu.registers.y, test_value);
 }
 
 #[test]

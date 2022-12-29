@@ -280,7 +280,7 @@ impl CPU
             /* ----- TYA ----- */
             0x98 => self.tya(),
             /* ----- Unsupported ----- */
-            _ => println!("Got unrecognized instruction, quitting. {:?}", instruction)
+            _ => println!("Got unrecognized instruction, skipping. {:?}", instruction)
         }
         
         // Dont advance the program counter if it was a jmp instruction - Austin Haskell 8/21/2021
@@ -362,11 +362,14 @@ impl CPU
     }
 
     pub fn load(&mut self, addr: u16) -> u8 {
+        #[cfg(test)]
+        println!("Reading memory address at 0x{:04x} and got value 0x{:02x}", addr, self.memory[addr as usize]);
         self.memory[addr as usize]
     }
 
     pub fn write(&mut self, addr: u16, data: u8) {
-        println!("Writing to address 0x{:04x}", addr);
+        #[cfg(test)]
+        println!("Writing the value 0x{:02x} to address 0x{:04x}", data, addr);
         self.memory[addr as usize] = data;
     }
 

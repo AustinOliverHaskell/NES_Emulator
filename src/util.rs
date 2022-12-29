@@ -370,3 +370,41 @@ pub fn print_bytes_in_hex(bytes: &Vec<u8>, num_bytes: u32, grouping: u8) {
         }
     }
 }
+
+pub fn print_memory_block(bytes: &Vec<u8>, bytes_per_line: u8, display_line_numbers: bool, start_line_numbers_at: u32, hide_zeros: bool) {
+    let mut byte_position: u32 = start_line_numbers_at; 
+
+    if display_line_numbers {
+        print!("|- 0x{:08x} -|", byte_position);
+    }
+
+    let mut wrap_count: u8 = 1;
+    for byte in bytes {
+        if *byte == 0 && hide_zeros {
+            print!("  ..  ");
+        } else {
+            print!(" 0x{:02x} ", byte);
+        }
+
+        byte_position += 1; 
+
+        if wrap_count >= bytes_per_line {
+            println!();
+            if display_line_numbers {
+                print!("|- 0x{:08x} -|", byte_position);
+            }
+            wrap_count = 1;
+        } else {
+            wrap_count += 1;
+        }
+
+    }
+    println!();
+}
+
+
+
+
+
+
+

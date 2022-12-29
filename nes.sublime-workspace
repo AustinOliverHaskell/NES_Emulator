@@ -1,0 +1,467 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"border-rig",
+				"border-right-width"
+			],
+			[
+				"border-le",
+				"border-left-width"
+			],
+			[
+				"border-bott",
+				"border-bottom-width"
+			],
+			[
+				"border-",
+				"border-top"
+			],
+			[
+				"border",
+				"border-style"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"font-s",
+				"font-style"
+			],
+			[
+				"bor",
+				"border-style"
+			],
+			[
+				"padding",
+				"padding-top"
+			],
+			[
+				"dis",
+				"distance_from_other_boid"
+			],
+			[
+				"di",
+				"divide_by_scalar"
+			],
+			[
+				"max",
+				"max_velocity"
+			],
+			[
+				"aver",
+				"average_position_of_flockmates"
+			],
+			[
+				"full",
+				"fullscreen_mode"
+			],
+			[
+				"boi",
+				"boid_raw_points"
+			],
+			[
+				"boid",
+				"boid_count"
+			],
+			[
+				"draw",
+				"draw_as_red"
+			],
+			[
+				"av",
+				"avoidance_range"
+			],
+			[
+				"avoi",
+				"avoidance_range"
+			],
+			[
+				"a",
+				"avoidance_vector"
+			],
+			[
+				"scal",
+				"scalar"
+			],
+			[
+				"sc",
+				"scalar"
+			],
+			[
+				"avera",
+				"average_heading_of_flockmates"
+			],
+			[
+				"avoid",
+				"avoidance_for_flockmates"
+			],
+			[
+				"average",
+				"average_position_of_flockmates"
+			],
+			[
+				"cal",
+				"calculate_avoidance_of_flockmates"
+			],
+			[
+				"ma",
+				"max_avoidance_force"
+			],
+			[
+				"scree",
+				"screen_width"
+			],
+			[
+				"screen",
+				"screen_height"
+			],
+			[
+				"ave",
+				"average_heading"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"in",
+				"in_fullscreen_mode"
+			],
+			[
+				"scr",
+				"screen_height"
+			],
+			[
+				"x",
+				"x_component"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"align",
+				"align-items"
+			],
+			[
+				"text-",
+				"text-decoration"
+			],
+			[
+				"do",
+				"do_we_draw_this_point"
+			],
+			[
+				"line",
+				"line_start"
+			],
+			[
+				"line_star",
+				"line_start_x"
+			],
+			[
+				"de",
+				"delta_y_over_slope"
+			],
+			[
+				"bo",
+				"border-width"
+			],
+			[
+				"backgrou",
+				"background"
+			],
+			[
+				"re",
+				"relative"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/main.rs",
+			"settings":
+			{
+				"buffer_size": 1382,
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"list pa",
+				"Package Control: List Packages"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"Markdown",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"list pac",
+				"Package Control: List Packages"
+			],
+			[
+				"List all ",
+				"Package Control: List Packages"
+			],
+			[
+				"list all ",
+				"Rust: List All Messages"
+			],
+			[
+				"List",
+				"Package Control: List Packages"
+			],
+			[
+				"view",
+				"View Package File"
+			],
+			[
+				"browse",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 304.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/austinhaskell/Documents/NES_Emulator",
+		"/Users/austinhaskell/Documents/NES_Emulator/src"
+	],
+	"file_history":
+	[
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog.css",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/articles/index.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/articles/test_article.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/articles/articles.css",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/articles/001_boids/boid_project.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/Website.sublime-workspace",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/articles/articles.css",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/articles/clean_code_bible.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/articles/test_article.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/articles/index.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/articles/boid_project.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/blog.css",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/index.html",
+		"/Users/austinhaskell/Documents/AustinOliverHaskell.github.io/blog/boids.js",
+		"/Users/austinhaskell/Documents/TemplateCommand/docs/template_files.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/README.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/KNOWN_BUGS.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/editor_plugins/sublime_plugin/install_instructions.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/editor_plugins/sublime_plugin/template_touch.py",
+		"/Users/austinhaskell/Documents/TemplateCommand/CHANGELOG.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/ROADMAP.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/DOCUMENTATION_TEMPLATE_FILES.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/DOCUMENTATION.md",
+		"/Users/austinhaskell/Documents/TemplateCommand/DOCUMENTATION_COMMAND_LINE.md",
+		"/C/Users/austi/AppData/Roaming/Sublime Text/Packages/template_touch/template_touch.py",
+		"/C/Users/austi/Desktop/Rust Projects/TemplateCommand/editor_plugins/sublime_plugin/template_touch.py",
+		"/C/Users/austi/Desktop/Rust Projects/TemplateCommand/DOCUMENTATION.md",
+		"/C/Users/austi/Desktop/Rust Projects/TemplateCommand/template_command.sublime-project",
+		"/C/Users/austi/Desktop/Rust Projects/TemplateCommand/sublime_plugin/sync_plugin.bat"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/main.rs",
+					"selected": true,
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1382,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								915,
+								915
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rust Enhanced/RustEnhanced.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 258.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "nes.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 196.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
