@@ -812,4 +812,10 @@ impl CPU
             self.clear_carry_bit();
         }
     }
+
+    fn eor(&mut self, mode: AddressingMode) {
+        let addr = get_operator_from_addressing_mode(self, mode);
+
+        self.registers.a = self.registers.a ^ self.load(addr);
+    }
 }
